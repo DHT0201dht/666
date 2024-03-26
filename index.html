@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        button{
+            width: 350px;
+            height: 200px;
+        }
+    </style>
+</head>
+
+<body>
+    <button id="myButton">节流</button>
+    <button id="myButton1">防抖</button>
+    <script>
+        // function throttle(func, limit) {
+        //     let inThrottle;
+        //     return function () {
+        //         const args = arguments;
+        //         const context = this;
+        //         if (!inThrottle) {
+        //             func.apply(context, args);
+        //             inThrottle = true;
+        //             setTimeout(() => inThrottle = false, limit);
+        //         }
+        //     }
+        // }
+
+        // // 测试节流函数
+        // const logOne = () => console.log(1);
+        // const throttledLogOne = throttle(logOne, 2000); // 设定1秒内只能触发一次
+
+        // // 模拟点击按钮触发log输出1
+        // document.getElementById('myButton').addEventListener('click', throttledLogOne);
+        let canRun = true;
+        function throttle(func, delay) {
+            return function () {
+                if (!canRun) return;
+                canRun = false;
+
+                setTimeout(function () {
+                    func();
+                    canRun = true;
+                }, delay);
+            }
+        }
+        const func = () => console.log(1);
+        const throttledLogOne = throttle(func, 2000);
+        document.getElementById('myButton').addEventListener('click', throttledLogOne);
+
+
+
+
+
+
+
+
+        //防抖函数
+        function debounce(func, delay) {
+            let timeoutId;
+            return function () {
+                const context = this;
+                const args = arguments;
+                clearTimeout(timeoutId);
+                timeoutId = setTimeout(() => {
+                    func.apply(context, args);
+                }, delay);
+            };
+        }
+
+        // 测试防抖函数
+        const logOne1 = () => console.log(1);
+        const debouncedLogOne = debounce(logOne1, 1000); // 设定延迟1秒触发
+
+        // 模拟点击按钮触发log输出1
+        document.getElementById('myButton1').addEventListener('click', debouncedLogOne);
+
+    </script>
+</body>
+
+</html>
